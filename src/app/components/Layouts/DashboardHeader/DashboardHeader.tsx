@@ -87,7 +87,7 @@ const DashboardHeader = () => {
                 </div>
                 <div className='flex flex-col items-center justify-center !lg:justify-start lg:items-start'>
                     <h2 className='text-first-500 text-lg md:text-3xl font-bold'>
-                        Hi Kabir,
+                        Hi Admin,
                     </h2>
                     <h3 className='text-first-500 text-xl font-normal hidden invisible lg:block lg:visible text-left'>
                         we’ve got you covered all!

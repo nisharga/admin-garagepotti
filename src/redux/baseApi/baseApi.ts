@@ -7,7 +7,7 @@ import { axiosBaseQuery } from './axiosBaseQuery';
 export const getBaseUrl = (): string => {
     return (
         process.env.NEXT_PUBLIC_API_BASE_URL ||
-        'https://66954a384bd61d8314cad239.mockapi.io'
+        ''
     );
 };
 

@@ -1,18 +1,29 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+ 
+const protectedRoutes = ["/p"]
 
-export function middleware(req: NextRequest) {
-    const accessToken = req.cookies.get('accessToken')?.value;
 
-    /* if (!accessToken) {
-        // Redirect to login if no token
-        return NextResponse.redirect(new URL('/auth/login', req.url));
-    } */
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+ 
+  const accessToken = request.cookies.get("rtoken")   
 
-    return NextResponse.next(); // Continue if authenticated
+
+  const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route))
+ 
+  if (isProtectedRoute && !accessToken) {
+    const url = new URL("/auth/login", request.url)
+    url.searchParams.set("callbackUrl", encodeURI(pathname))
+    return NextResponse.redirect(url)
+  }
+
+
+  return NextResponse.next()
 }
-
-// Apply middleware to protected routes
+ 
 export const config = {
-    matcher: ['/dashboard/:path*', '/profile/:path*'] // Add protected routes here
-};
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|public).*)",
+  ],
+}

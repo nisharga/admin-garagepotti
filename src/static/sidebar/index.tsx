@@ -13,10 +13,22 @@ export const sideMenu: SideMenuType[] = [
         link: '/dashboard'
     },
     {
-        id: 3,
-        name: 'mechanics',
+        id: 2,
+        name: 'services',
         icon: 'SendMoney',
-        link: '/mechanics'
+        link: '/services'
+    },
+    {
+        id: 3,
+        name: 'vehicle',
+        icon: 'Car',
+        link: '/vehicle'
+    },    
+    {
+        id: 3,
+        name: 'trash',
+        icon: 'Trash2',
+        link: '/trash'
     },
     {
         id: 5,
