@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,25 +12,27 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label" 
-import StatusBadge from "./StatusChange"
+import { Label } from "@/components/ui/label"  
+import { cva, VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
 
-type Status = "active" | "pending" | "completed" | "cancelled"
+type Status = "active" | "inactive"
 
 interface StatusChangeDialogProps {
   currentStatus: Status
   onStatusChange: (newStatus: Status) => void
   itemTitle: string
+  dialogData: any;
 }
 
-const StatusChangeDialog = ({ currentStatus, onStatusChange, itemTitle }: StatusChangeDialogProps) => {
+const StatusChangeDialog = ({ currentStatus, onStatusChange, itemTitle, dialogData }: StatusChangeDialogProps) => {
   const [status, setStatus] = useState<Status>(currentStatus)
   const [open, setOpen] = useState(false)
 
   const handleStatusChange = () => {
     onStatusChange(status)
     setOpen(false)
-  }
+  } 
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -50,30 +52,16 @@ const StatusChangeDialog = ({ currentStatus, onStatusChange, itemTitle }: Status
             onValueChange={(value) => setStatus(value as Status)}
             className="flex flex-col space-y-3"
           >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="active" id="active" />
-              <Label htmlFor="active" className="flex items-center">
-                <StatusBadge status="active" className="ml-2" />
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="pending" id="pending" />
-              <Label htmlFor="pending" className="flex items-center">
-                <StatusBadge status="pending" className="ml-2" />
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="completed" id="completed" />
-              <Label htmlFor="completed" className="flex items-center">
-                <StatusBadge status="completed" className="ml-2" />
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="cancelled" id="cancelled" />
-              <Label htmlFor="cancelled" className="flex items-center">
-                <StatusBadge status="cancelled" className="ml-2" />
-              </Label>
-            </div>
+            {
+              (dialogData ?? []).map(({ id, label, value }: any) => (
+                <div className="flex items-center space-x-2" key={id}>
+                  <RadioGroupItem value={value} id={value} />
+                  <Label htmlFor={value} className="flex items-center">
+                    <StatusBadge status={label} className="ml-2" />
+                  </Label>
+                </div>
+              ))
+            } 
           </RadioGroup>
         </div>
         <DialogFooter>
@@ -89,3 +77,28 @@ const StatusChangeDialog = ({ currentStatus, onStatusChange, itemTitle }: Status
 
 export default StatusChangeDialog
 
+
+const statusVariants = cva("inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold", {
+  variants: {
+    variant: {
+      active: "bg-green-100 text-green-800 border border-green-200", 
+      inactive: "bg-red-100 text-red-800 border border-red-200",
+    },
+  },
+  defaultVariants: {
+    variant: "active",
+  },
+})
+
+export interface StatusBadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof statusVariants> {
+  status: any;
+}
+
+const StatusBadge = ({ className, status, ...props }: StatusBadgeProps) => {
+  return (
+    <div className={cn(statusVariants({ variant: status }), className)} {...props}>
+      <span className={`mr-1 h-1.5 w-1.5 rounded-full bg-current`} />
+      <span className="capitalize">{status}</span>
+    </div>
+  )
+}

@@ -1,4 +1,12 @@
-import { TableItem } from "@/app/(dashboard)/services/components/ServiceTable";
+ 
+// Define the data type for our table
+export type TableItem = {
+  id: string
+  title: string
+  service: string
+  status: "active" | "inactive"
+}
+
 
 // Sample data
 export const ServiceMockData: TableItem[] = [
@@ -12,13 +20,13 @@ export const ServiceMockData: TableItem[] = [
       id: "2",
       title: "Logo Design",
       service: "Graphic Design",
-      status: "completed",
+      status: "inactive",
     },
     {
       id: "3",
       title: "SEO Optimization",
       service: "Marketing",
-      status: "pending",
+      status: "active",
     },
     {
       id: "4",
@@ -30,7 +38,7 @@ export const ServiceMockData: TableItem[] = [
       id: "5",
       title: "Content Writing",
       service: "Content",
-      status: "cancelled",
+      status: "inactive",
     },
     {
       id: "6",
