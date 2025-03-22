@@ -30,7 +30,7 @@ const ActionButtons = ({ editUrl, handleDelete, name }: IProps) => {
   }
 
   return (
-    <div className="flex space-x-2">
+    <div className="flex space-x-2 items-center justify-end">
       <Link href={editUrl}>
         <Button variant="outline" size="icon"> 
             <Edit className="h-4 w-4" />

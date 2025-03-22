@@ -6,14 +6,14 @@ import {
   flexRender, 
 } from "@tanstack/react-table" 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table" 
-import { useServiceTableData } from "./useTableData"
 import { TablePagination } from "../../components"
 import { useState } from "react"
+import { useVehicleTableData } from "./useTableData"
  
-const ServiceTable = () => {
+const VehicleTable = () => {
   const [pageNo, setPageNo] = useState<number | undefined>(1); 
   
-  const { columns, data } = useServiceTableData({pageNo}); // then pass it here
+  const { columns, data } = useVehicleTableData({pageNo}); // then pass it here
 
   // Set up the table
   const table = useReactTable({
@@ -23,7 +23,7 @@ const ServiceTable = () => {
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: 4,
       },
     },
   })
@@ -36,7 +36,7 @@ const ServiceTable = () => {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className={header?.id === 'actions' ? 'text-right pr-12' : ''}>
+                  <TableHead key={header.id} className={header?.id === 'actions' ? 'text-right pr-12' : ''}> 
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
@@ -69,4 +69,4 @@ const ServiceTable = () => {
   )
 }
 
-export default ServiceTable;
+export default VehicleTable;

@@ -101,5 +101,5 @@ const LogOut = () => {
 
 const getFirstTwoSegments = (path: string): string => {
     const segments = path.split('/').filter(Boolean);
-    return `/${segments.slice(0, 2).join('/')}`;
+    return `/${segments.slice(0, 1).join('/')}`;
 };

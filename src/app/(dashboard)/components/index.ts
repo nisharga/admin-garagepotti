@@ -3,3 +3,4 @@ export { default as TableSectionTitle } from './TableSectionTitle';
 export { default as ActionButtons } from './ActionButtons';
 export { default as TablePagination } from './TablePagination';
 export { default as FormBtn } from './FormBtn';
+export { default as FormSelect } from './FormSelect';

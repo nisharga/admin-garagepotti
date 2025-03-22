@@ -44,12 +44,12 @@ export const ServiceMockData: TableItem[] = [
       id: "6",
       title: "Social Media Campaign",
       service: "Marketing",
-      status: "pending",
+      status: "active",
     },
     {
       id: "7",
       title: "Email Newsletter",
       service: "Email Marketing",
-      status: "completed",
+      status: "inactive",
     },
   ]

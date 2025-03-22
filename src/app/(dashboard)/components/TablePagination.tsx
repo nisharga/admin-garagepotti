@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
  
-import { Button } from '@/components/ui/button'
-import { TableItem } from '@/static';
+import { Button } from '@/components/ui/button' 
 import { Table } from '@tanstack/react-table';
 import React from 'react'
 
 interface IProps {
-    table: Table<TableItem>;
+    table: Table<any>;
     setPageNo: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
