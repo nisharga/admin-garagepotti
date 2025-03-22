@@ -1,1 +1,1 @@
-export { default as EditServiceForm } from './EditServiceForm';
+export { default as EditForm } from './EditForm';

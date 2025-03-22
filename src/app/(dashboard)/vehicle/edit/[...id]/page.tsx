@@ -1,16 +1,16 @@
 import { TableSectionTitle } from '@/app/(dashboard)/components'
 import React from 'react' 
-import { EditServiceForm } from './components'
+import { EditForm } from './components'
 
 const page = () => {
   return (
     <main className="px-4 sm:container mx-auto py-10">
       <TableSectionTitle 
-        name="Service"
+        name="Vehicle"
         type="edit"
-        url="/services"
+        url="/vehicle"
       /> 
-      <EditServiceForm />
+      <EditForm />
     </main>
   )
 }
