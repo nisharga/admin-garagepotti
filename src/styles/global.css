@@ -6,20 +6,23 @@
   * {
     @apply m-0 p-0 box-border;
   }
+
   body {
-    @apply text-base bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-300 font-normal
-    font-outfit leading-normal;
+    @apply text-base bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-300 font-normal font-outfit leading-normal;
   }
 
   h1 {
     @apply font-semibold;
   }
+
   h2 {
     @apply font-medium;
   }
+
   h3 {
     @apply text-xl;
   }
+
   :root {
 
     --background: 0 0% 100%;
@@ -72,6 +75,7 @@
 
     --radius: 0.5rem
   }
+
   .dark {
 
     --background: 222.2 84% 4.9%;
@@ -128,7 +132,9 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
 }
