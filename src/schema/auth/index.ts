@@ -49,13 +49,6 @@ export const loginSchema = z.object({
       message: "Provide a valid email address",
     }).email(),
     password: z.string()
-    .regex(new RegExp(".*[A-Z].*"), "One uppercase character")
-    .regex(new RegExp(".*[a-z].*"), "One lowercase character")
-    .regex(new RegExp(".*\\d.*"), "One number")
-    .regex(
-      new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
-      "One special character"
-    )
     .min(6, "Must be at least 6 characters in length")
 })
 

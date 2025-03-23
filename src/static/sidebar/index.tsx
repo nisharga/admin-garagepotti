@@ -14,38 +14,39 @@ export const sideMenu: SideMenuType[] = [
     },
     {
         id: 2,
+        name: 'mechanic',
+        icon: 'Account',
+        link: '/mechanic'
+    },
+    {
+        id: 3,
         name: 'services',
         icon: 'SendMoney',
         link: '/services'
     },
     {
-        id: 3,
+        id: 4,
         name: 'vehicle',
         icon: 'Car',
         link: '/vehicle'
     },    
     {
-        id: 3,
+        id: 5,
         name: 'trash',
         icon: 'Trash2',
         link: '/trash'
     },
     {
-        id: 5,
+        id: 6,
         name: 'car owners',
         icon: 'Recipients',
         link: '/car-owners'
     },
     {
-        id: 4,
+        id: 7,
         name: 'transactions',
         icon: 'Transactions',
         link: '/user/transactions'
     },
-    {
-        id: 6,
-        name: 'Account',
-        icon: 'Account',
-        link: '/user/account'
-    }
+    
 ];

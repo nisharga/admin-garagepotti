@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 import { Form } from '@/components/ui/form';
 import { loginSchema } from '@/schema/auth';
@@ -8,15 +9,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { z } from 'zod';
-import { handleLogin } from '../../actions';
-import ForgetPassModal from './ForgetPassModal';
-import { OTPConfirmPage } from '@/static/auth';
+import { z } from 'zod'; 
+import ForgetPassModal from './ForgetPassModal'; 
 import { LoadingSpinner } from '@/components/shared';
+import { ACCESS_TOKEN_EXPIRY, API_BASE_URL } from '@/config';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const LoginForm = () => {
-    const [loading, setLoading] = useState<boolean>();
-    const [index, setIndex] = useState(0);
+    const [loading, setLoading] = useState<boolean>(); 
     // Define init value.
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -30,22 +31,28 @@ const LoginForm = () => {
     const onSubmit = async (values: z.infer<typeof loginSchema>) => {
         try {
             setLoading(true);
-            const res = await handleLogin(values);
-            if (res.statusCode === 200) {
-                if (res?.data?.user?.role === 'USER') {
-                    window.location.href = '/dashboard';
-                    toast.success('You have successfully logged in!');
-                    setLoading(false);
-                } else {
-                    toast.error('No user found!!!');
-                    setLoading(false);
+            const res = await axios.post(
+                `${API_BASE_URL}/auth/login`,
+                {
+                    email: values.email,
+                    password: values.password,
+                    role: 'admin'
                 }
+            ); 
+            
+            if (res.status === 200) { 
+                const { accessToken } = res?.data?.data
+                console.log(accessToken);
+                Cookies.set('token', accessToken, {
+                    expires: new Date(Date.now() + ACCESS_TOKEN_EXPIRY),
+                    path: '/'
+                });
+                setLoading(false);
+                window.location.href = '/dashboard';
+                toast.success('You have successfully logged in!'); 
             } else {
                 setLoading(false);
-                toast.error(res?.message);
-                if (res?.message?.includes('not verified')) {
-                    setIndex(1);
-                }
+                toast.error(res?.data?.message); 
             }
         } catch (error: any) {
             setLoading(false);
@@ -59,8 +66,7 @@ const LoginForm = () => {
 
     return (
         <div className='relative'>
-            {index === 0 && (
-                <div className='relative'>
+            <div className='relative'>
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
@@ -108,9 +114,8 @@ const LoginForm = () => {
                     <div className='mb-2 flex items-center justify-end absolute bottom-[90px] sm:bottom-[88px] right-0'>
                         <ForgetPassModal />
                     </div>
-                </div>
-            )}
-            {index === 1 && (
+            </div>
+            {/* {index === 1 && (
                 <>
                     <div className='px-6 md:px-12 lg:px-24 text-center mb-4'>
                         <h5 className='text-black text-xl font-bold mb-1.5'>
@@ -121,7 +126,7 @@ const LoginForm = () => {
                         </p>
                     </div>
                 </>
-            )}
+            )} */}
         </div>
     );
 };

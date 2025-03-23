@@ -33,7 +33,7 @@ const createAxiosInstance = (baseUrl: string): AxiosInstance => {
         (config) => {
             const token = Cookies.get('token');
             if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
+                config.headers.Authorization = `${token}`;
             }
             return config;
         },
@@ -62,7 +62,7 @@ const createAxiosInstance = (baseUrl: string): AxiosInstance => {
                         `${API_BASE_URL}/authroute/refreshtoken`,
                         {
                             headers: {
-                                Authorization: `Bearer ${rtoken}`
+                                Authorization: `${rtoken}`
                             },
                             withCredentials: true
                         }
@@ -145,3 +145,5 @@ export const axiosBaseQuery =
             };
         }
     };
+
+

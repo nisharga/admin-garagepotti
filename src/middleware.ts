@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
  
-const protectedRoutes = ["/p"]
+const protectedRoutes = ["/dashboard", 
+  "/services", "/services/add", "/services/edit/:id",
+  "/vehicle", "/vehicle/add", "/vehicle/edit/:id"
+]
 
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
  
-  const accessToken = request.cookies.get("rtoken")   
+  const accessToken = request.cookies.get("token")   
 
 
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route))
