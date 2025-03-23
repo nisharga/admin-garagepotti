@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label"
 import { cva, VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
-type Status = "active" | "inactive"
+type Status = "active" | "inactive" | "approved" | "pending" | "rejected"
 
 interface StatusChangeDialogProps {
   currentStatus: Status
@@ -83,6 +83,9 @@ const statusVariants = cva("inline-flex items-center rounded-full px-2.5 py-0.5 
     variant: {
       active: "bg-green-100 text-green-800 border border-green-200", 
       inactive: "bg-red-100 text-red-800 border border-red-200",
+      approved: "bg-green-100 text-green-800 border border-green-200", 
+      pending: "bg-orange-100 text-green-800 border border-green-200", 
+      rejected: "bg-red-100 text-red-800 border border-red-200",
     },
   },
   defaultVariants: {

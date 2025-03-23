@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
  
 const protectedRoutes = ["/dashboard", 
+   "/mechanic", "/mechanic/edit/:id",
   "/services", "/services/add", "/services/edit/:id",
   "/vehicle", "/vehicle/add", "/vehicle/edit/:id"
 ]

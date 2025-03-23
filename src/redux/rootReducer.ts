@@ -1,18 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer } from 'redux-persist';
-import { cartSlice } from './cart/cartSlice'; // Ensure this is correctly imported
+import { cartSlice } from './cart/cartSlice'; // Ensure correct import
 import { baseApi } from './baseApi/baseApi';
 
-const persistConfig = {
-    key: 'root',
-    version: 1,
-    storage
-};
-
-const combinedReducers = combineReducers({
+const rootReducer = combineReducers({
     [baseApi.reducerPath]: baseApi.reducer,
-    cart: cartSlice.reducer // Access the `reducer` property of `cartSlice`
+    cart: cartSlice.reducer // Directly use cart reducer
 });
 
-export const persistedReducer = persistReducer(persistConfig, combinedReducers);
+export default rootReducer;

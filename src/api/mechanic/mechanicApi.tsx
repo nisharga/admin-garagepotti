@@ -8,9 +8,17 @@ const mechanicApi = baseApi.injectEndpoints({
         url: `/user/all/mechanic`,
         method: "GET", 
       }), 
-      providesTags: [tagTypes.mechanic],
+      providesTags: [tagTypes.mechanic], 
+    }),
+    mechanicVerifyStatus: build.mutation({
+      query: ({id, ...data}) => ({
+        url: `/verification/mechanic/status/${id}`,
+        method: "PATCH", 
+        data: data,
+      }),
+      invalidatesTags: [tagTypes.mechanic],
     }),
   }),
 });
 
-export const { useGetAllMechanicQuery } = mechanicApi;
+export const { useGetAllMechanicQuery, useMechanicVerifyStatusMutation } = mechanicApi;
