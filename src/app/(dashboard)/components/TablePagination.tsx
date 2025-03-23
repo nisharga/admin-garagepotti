@@ -10,9 +10,10 @@ interface IProps {
 }
 
 const TablePagination = ({table, setPageNo}: IProps) => {
+  const pageCount = table?.getPageCount() ?? 1;
   return (
     <div className="flex space-x-1">
-          {Array?.from({ length: 4 }, (_, i) => i + 1).map((page) => (
+          {Array?.from({ length: pageCount }, (_, i) => i + 1).map((page) => (
             <Button
               key={page}
               variant={table.getState().pagination.pageIndex === page - 1 ? "default" : "outline"}

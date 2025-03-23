@@ -1,5 +1,5 @@
 import React from 'react' 
-// import { MechanicTable } from './components'
+import { MechanicTable } from './components'
 
 const page = () => {
   return (
@@ -7,7 +7,7 @@ const page = () => {
       <div className="flex justify-between items-center mb-6">
        <h1 className="text-2xl font-bold">Manage Mechanic</h1>  
       </div> 
-      {/* <MechanicTable /> */}
+      <MechanicTable />
     </main>
   )
 }

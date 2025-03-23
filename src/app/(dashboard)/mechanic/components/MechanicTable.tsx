@@ -14,11 +14,12 @@ const MechanicTable = () => {
   const [pageNo, setPageNo] = useState<number | undefined>(1); 
   
   const { columns, data, isLoading, error } = useVehicleTableData({pageNo}); // then pass it here
+ 
   
 
   // Set up the table
   const table = useReactTable({
-    data : data?.data?.data,
+    data : data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

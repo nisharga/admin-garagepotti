@@ -11,7 +11,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
         <NextThemesProvider {...props}>
             <main className='scroll-smooth' suppressHydrationWarning>
                 <Provider store={store}> 
-                        {children} 
+                    {children} 
                 </Provider>
             </main>
         </NextThemesProvider>

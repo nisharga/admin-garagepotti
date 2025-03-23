@@ -11,12 +11,12 @@ const mechanicApi = baseApi.injectEndpoints({
       providesTags: [tagTypes.mechanic], 
     }),
     mechanicVerifyStatus: build.mutation({
-      query: ({id, ...data}) => ({
+      query: ({ id, adminVerificationStatus }) => ({
         url: `/verification/mechanic/status/${id}`,
         method: "PATCH", 
-        data: data,
+        body: { adminVerificationStatus }, // Corrected from `data` to `body`
       }),
-      invalidatesTags: [tagTypes.mechanic],
+      invalidatesTags: [tagTypes.mechanic], // Refresh cache after mutation
     }),
   }),
 });
