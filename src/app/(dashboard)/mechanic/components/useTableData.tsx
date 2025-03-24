@@ -30,7 +30,8 @@ const columnHelper = createColumnHelper<IMechanic>();
 export const useVehicleTableData = ({ pageNo }: { pageNo: number | undefined }) => {  
   const { data: mechanicData, error, isLoading } = useGetAllMechanicQuery(pageNo);  
 
-  const [mechanicVerifyStatus] = useMechanicVerifyStatusMutation(); 
+  const [ mechanicVerifyStatus ] = useMechanicVerifyStatusMutation();
+
   const [data, setData] = useState<IMechanic[]>([]);
  
   useEffect(() => {
@@ -40,10 +41,14 @@ export const useVehicleTableData = ({ pageNo }: { pageNo: number | undefined }) 
   }, [mechanicData, isLoading]);
 
   const handleUpdateStatusFunc = async (id: string, status: string) => { 
-    try {
-      const res = await mechanicVerifyStatus({ id, adminVerificationStatus: status }).unwrap();
-      toast.success("Status updated successfully!");
-      console.log("🚀 ~ handleUpdateStatusFunc ~ res:", res);
+    const updateData = {
+      adminVerificationStatus: status, 
+    };
+    try { 
+      const response = await mechanicVerifyStatus({id, updateData});  
+      if(response){
+        toast.success("Status updated successfully!");
+      } 
     } catch (error) {
       console.error("Error updating status:", error);
       toast.error("Failed to update status.");
@@ -51,7 +56,7 @@ export const useVehicleTableData = ({ pageNo }: { pageNo: number | undefined }) 
   };
 
   const handleDeleteFunc = (id: string) => {
-    toast.success(id);
+    toast.success(`This feature is coming soon ${id}`);
   };
 
   const columns = useMemo(
@@ -93,7 +98,7 @@ export const useVehicleTableData = ({ pageNo }: { pageNo: number | undefined }) 
         header: "Actions",
         cell: (info) => (
           <ActionButtons 
-            editUrl={`/vehicle/edit/${info.row.original?._id}`}
+            editUrl={`/mechanic/update/${info.row.original?._id}`}
             handleDelete={() => handleDeleteFunc(info.row.original?._id)}
             name={info.row.original?._id}
           />

@@ -10,15 +10,37 @@ const mechanicApi = baseApi.injectEndpoints({
       }), 
       providesTags: [tagTypes.mechanic], 
     }),
+    getSingleMechanic: build.query({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: "GET", 
+      }), 
+      providesTags: [tagTypes.mechanic], 
+    }),
     mechanicVerifyStatus: build.mutation({
-      query: ({ id, adminVerificationStatus }) => ({
-        url: `/verification/mechanic/status/${id}`,
-        method: "PATCH", 
-        body: { adminVerificationStatus }, // Corrected from `data` to `body`
+      query: ({ id, ...data }) => { 
+        console.log('my data:', data.updateData); //{adminVerificationStatus: 'pending'}
+        return {
+          url: `/verification/mechanic/status/${id}`,
+          method: "PATCH",
+          data: data.updateData,
+        };
+      },
+      invalidatesTags: [tagTypes.mechanic],
+    }),
+    mechanicUpdate: build.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/verification/mechanic/${id}`,
+        method: "PATCH",
+        body: data,
       }),
-      invalidatesTags: [tagTypes.mechanic], // Refresh cache after mutation
+      invalidatesTags: [tagTypes.mechanic],
     }),
   }),
 });
 
-export const { useGetAllMechanicQuery, useMechanicVerifyStatusMutation } = mechanicApi;
+export const { useGetAllMechanicQuery, 
+  useMechanicVerifyStatusMutation, 
+  useGetSingleMechanicQuery,
+  useMechanicUpdateMutation
+ } = mechanicApi;

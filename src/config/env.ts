@@ -4,3 +4,4 @@ export const SITE_DOMAIN =
 
 export const ACCESS_TOKEN_EXPIRY = Number(process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXPIRY || 22000) * 1000;
 export const REFRESH_TOKEN_EXPIRY = Number(process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXPIRY) * 1000;
+export const IMAGE_BB_KEY = process.env.NEXT_PUBLIC_IMAGEBB_KEY || ''

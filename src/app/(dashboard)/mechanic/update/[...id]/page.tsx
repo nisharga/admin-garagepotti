@@ -6,9 +6,9 @@ const page = () => {
   return (
     <main className="px-4 sm:container mx-auto py-10">
       <TableSectionTitle 
-        name="Vehicle"
+        name="Mechanic"
         type="edit"
-        url="/vehicle"
+        url="/mechanic"
       /> 
       <EditForm />
     </main>
