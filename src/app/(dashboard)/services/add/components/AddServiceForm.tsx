@@ -6,6 +6,9 @@ import { Form } from "@/components/ui/form"
 import { Card, CardContent } from "@/components/ui/card"
 import { FormInput } from "@/app/components"
 import { FormBtn } from "@/app/(dashboard)/components"
+import { useCreateServiceMutation } from "@/api"
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
  
 // Form validation schema
 const formSchema = z.object({
@@ -18,6 +21,9 @@ const formSchema = z.object({
 })
 
 const AddServicePage = () => { 
+  const router = useRouter();
+  const [createService, { isLoading, isError }] = useCreateServiceMutation();
+
 
   // Initialize form with empty values
   const form = useForm<z.infer<typeof formSchema>>({
@@ -29,10 +35,14 @@ const AddServicePage = () => {
   })
 
   // Handle form submission
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
    
+    const response = await createService(values)
+    if(response){
+      router.push('/services');
+      toast.success("Service created successfully")
+    }    
  
-    console.log("New Service Data:", values)
 
     // Simulate API call
     setTimeout(() => { 
@@ -40,6 +50,9 @@ const AddServicePage = () => {
     }, 1000)
   }
 
+  if(isError){
+    return 'Something went wrong!!'
+  }
   return ( 
       <Card className="bg-transparent">
         <CardContent>
@@ -64,7 +77,7 @@ const AddServicePage = () => {
 
                 <FormBtn 
                   backURL={'/services'}
-                  loading={false}
+                  loading={isLoading}
                   submitBtnLabel="Create"
                 />
  

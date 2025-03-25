@@ -5,7 +5,11 @@ import { z } from "zod"
 import { Form } from "@/components/ui/form"
  import { Card, CardContent } from "@/components/ui/card" 
 import { FormInput } from "@/app/components"
-import { FormBtn } from "@/app/(dashboard)/components"
+import { FormBtn } from "@/app/(dashboard)/components" 
+import { useGetSingleServiceQuery, useUpdateSingleServiceMutation } from "@/api"
+import { useParams, useRouter } from "next/navigation" 
+import { useEffect } from "react"
+import toast from "react-hot-toast"
 
 // Form validation schema
 const formSchema = z.object({
@@ -17,33 +21,60 @@ const formSchema = z.object({
   }), 
 })
 
-// Default service data (in a real app, you would fetch this from an API)
-const defaultService = {
-  id: "1",
-  title: "Website Redesign", 
-  description: "Complete redesign of company website with modern UI/UX principles.", 
-}
+ 
 
 export default function EditServiceForm() { 
 
-  // Initialize form with default values
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: defaultService.title,
-      description: defaultService.description, 
-    },
-  })
+const router = useRouter();
+const serviceId = useParams()?.id;  
 
-  // Handle form submission
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    
- 
-    console.log("Form data:", values)
- 
-    
+
+const { data, error, isLoading: isLoadingQuery } = useGetSingleServiceQuery(serviceId && serviceId[0]); 
+const [ updateSingleService, { isLoading } ] = useUpdateSingleServiceMutation();
+
+const form = useForm<z.infer<typeof formSchema>>({
+  resolver: zodResolver(formSchema),
+  defaultValues: {
+    title: '',
+    description: '', 
+  },
+});
+
+// Update form values when data is available
+useEffect(() => {
+  if (!isLoadingQuery && data?.data) {
+    form.reset({
+      title: data.data.title,
+      description: data.data.description,
+    });
   }
+}, [data, form, isLoadingQuery]);
 
+// Handle form submission
+async function onSubmit(values: z.infer<typeof formSchema>) {  
+  try { 
+    if (serviceId && serviceId[0]) {
+      const response = await updateSingleService({
+        id: serviceId[0], 
+        ...values,         
+      });  
+  
+      if (response?.data.success) {
+        router.push('/services')
+        toast.success("Status updated successfully!");
+      } else {
+        throw new Error("Failed to update");
+      }
+    }  
+  } catch (error) {
+    console.error("Error updating status:", error);
+    toast.error("Failed to update status.");
+  }  
+}
+
+if(error){
+  return 'something went wrong!!'
+}
   return (
     <Card className="bg-transparent">
         <CardContent className="pt-6">
@@ -68,7 +99,7 @@ export default function EditServiceForm() {
 
                 <FormBtn 
                     backURL={'/services'}
-                    loading={false}
+                    loading={isLoading}
                     submitBtnLabel="Edit"
                 />      
             </form>

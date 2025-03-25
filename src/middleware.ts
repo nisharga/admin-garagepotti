@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
  
-// const protectedRoutes = ["/dashboard", 
-//    "/mechanic", "/mechanic/update/:id",
-//   "/services", "/services/add", "/services/edit/:id",
-//   "/vehicle", "/vehicle/add", "/vehicle/edit/:id"
-// ]
-const protectedRoutes = ["/pp"]
+const protectedRoutes = ["/dashboard", 
+   "/mechanic", "/mechanic/update/:id",
+  "/services", "/services/add", "/services/edit/:id",
+  "/vehicle", "/vehicle/add", "/vehicle/edit/:id"
+]
+// const protectedRoutes = ["/pp"]
 
 
 export function middleware(request: NextRequest) {

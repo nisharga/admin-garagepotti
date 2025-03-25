@@ -2,8 +2,7 @@
 "use client" 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
+import * as z from "zod" 
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form" 
@@ -13,6 +12,7 @@ import { useGetSingleMechanicQuery, useMechanicUpdateMutation } from "@/api"
 import { useState } from "react"
 import ImageUpload from "./ImageUpload"
 import toast from "react-hot-toast"
+import { FormBtn } from "@/app/(dashboard)/components"
 
 // Define the form schema with validation
 const formSchema = z.object({
@@ -201,10 +201,12 @@ export default function MechanicForm() {
           /> 
 
         </CardContent>
-        <CardFooter>
-          <Button type="submit" className="ml-auto">
-            Submit
-          </Button>
+        <CardFooter className="w-full justify-end">
+              <FormBtn 
+                backURL={'/mechanic'}
+                loading={false}
+                submitBtnLabel="Submit"
+              />
         </CardFooter>
       </form>
     </Form>

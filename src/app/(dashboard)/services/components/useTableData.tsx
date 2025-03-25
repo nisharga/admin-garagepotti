@@ -1,8 +1,10 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ActionButtons, StatusChangeDialog } from "../../components";
 import toast from "react-hot-toast";
-import { ServiceMockData, TableItem } from "@/static"; 
+import { TableItem } from "@/static"; 
+import { useDeleteSingleServiceMutation, useGetAllServiceQuery, useUpdateSingleServiceMutation } from "@/api";
+import { useRouter } from "next/navigation";
 
 const status = [
     {
@@ -19,17 +21,46 @@ const status = [
 
 const columnHelper = createColumnHelper<TableItem>();
 export const useServiceTableData = ({ pageNo }: { pageNo: number | undefined }) => { 
-console.log("🚀 ~ useServiceTableData ~ pageNo:", pageNo)
+  const router = useRouter();
+  const [data, setData] = useState('');
 
-  const [data, setData] = useState(ServiceMockData);
+  const { data: serviceData, isLoading } = useGetAllServiceQuery(pageNo); 
+  const [ updateSingleService ] = useUpdateSingleServiceMutation();
+  const [ deleteSingleService ] = useDeleteSingleServiceMutation();
 
-  const handleDeleteFunc = (id: string) =>{
-    toast.success(id) 
+  useEffect(() => {
+    if (!isLoading && serviceData?.data?.data) {
+      setData(serviceData.data.data);
+    }
+  }, [serviceData, isLoading]);
+ 
+
+  const handleDeleteFunc = async (id: string) =>{ 
+    try { 
+      const response = await deleteSingleService(id);  
+      if(response?.data?.success){
+        toast.success("Service Deleted successfully!");
+        router.push('/services')
+      }   
+    } catch (error) {
+      console.error("Error updating status:", error);
+      toast.error("Failed to update status.");
+    }  
   }
   
-  const handleUpdateStatusFunc = (id: string, status: string) =>{
-    toast.success(id) 
-    toast.success(status) 
+  const handleUpdateStatusFunc = async (id: string, status: string) =>{
+     
+    try { 
+      const response = await updateSingleService({id, status: status});  
+      console.log("🚀 ~ handleUpdateStatusFunc ~ response:", response)
+      if(response?.data?.success){
+        toast.success("Status updated successfully!");
+      }   
+      
+    } catch (error) {
+      console.error("Error updating status:", error);
+      toast.error("Failed to update status.");
+    }  
   }
   const columns = useMemo(
     () => [
@@ -37,8 +68,8 @@ console.log("🚀 ~ useServiceTableData ~ pageNo:", pageNo)
             header: "Title",
             cell: (info) => info.getValue(),
           }),
-          columnHelper.accessor("service", {
-            header: "Service",
+          columnHelper.accessor("description", {
+            header: "Description",
             cell: (info) => info.getValue(),
           }), 
           columnHelper.accessor("status", {
@@ -48,7 +79,7 @@ console.log("🚀 ~ useServiceTableData ~ pageNo:", pageNo)
                 dialogData={status}
                 currentStatus={info.getValue()}
                 itemTitle={info.row.original.title}
-                onStatusChange={(newStatus) => handleUpdateStatusFunc(info.row.original.id, newStatus)}
+                onStatusChange={(newStatus) => handleUpdateStatusFunc(info.row.original._id, newStatus)}
               />
             ),
           }),
@@ -57,15 +88,16 @@ console.log("🚀 ~ useServiceTableData ~ pageNo:", pageNo)
             header: "Actions",
             cell: (info) => (
               <ActionButtons 
-                editUrl={`/services/edit/${info.row.original?.id}`}
-                handleDelete={() => handleDeleteFunc(info.row.original?.id)}
-                name={info.row.original?.id}
+                editUrl={`/services/edit/${info.row.original?._id}`}
+                handleDelete={() => handleDeleteFunc(info.row.original?._id)}
+                name={info.row.original?._id}
               />
             ),
           }),
     ],
     []
   );
+ 
  
   return { columns, data, setData };
 };
