@@ -22,7 +22,7 @@ const status = [
 const columnHelper = createColumnHelper<TableItem>();
 export const useServiceTableData = ({ pageNo }: { pageNo: number | undefined }) => { 
   const router = useRouter();
-  const [data, setData] = useState('');
+  const [data, setData] = useState([]);
 
   const { data: serviceData, isLoading } = useGetAllServiceQuery(pageNo); 
   const [ updateSingleService ] = useUpdateSingleServiceMutation();
@@ -51,8 +51,7 @@ export const useServiceTableData = ({ pageNo }: { pageNo: number | undefined }) 
   const handleUpdateStatusFunc = async (id: string, status: string) =>{
      
     try { 
-      const response = await updateSingleService({id, status: status});  
-      console.log("🚀 ~ handleUpdateStatusFunc ~ response:", response)
+      const response = await updateSingleService({id, status: status});   
       if(response?.data?.success){
         toast.success("Status updated successfully!");
       }   
