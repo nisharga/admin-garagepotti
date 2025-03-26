@@ -9,11 +9,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { TablePagination } from "../../components"
 import { useState } from "react"
 import { useVehicleTableData } from "./useTableData"
+import { Error, Loading } from "@/shared"
  
 const VehicleTable = () => {
   const [pageNo, setPageNo] = useState<number | undefined>(1); 
   
-  const { columns, data } = useVehicleTableData({pageNo}); // then pass it here
+  const { columns, data, isLoading, isError, error } = useVehicleTableData({pageNo}); // then pass it here
 
   // Set up the table
   const table = useReactTable({
@@ -64,6 +65,10 @@ const VehicleTable = () => {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <TablePagination table={table} setPageNo={setPageNo} />
+      </div>
+      <div className="">
+        {isLoading ? <Loading /> : ''}
+        {isError ? <Error error={error as { message: string } | undefined} /> : ''}
       </div>
     </div>
   )
